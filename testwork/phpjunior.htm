@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en"><script type="text/javascript" charset="utf-8" id="zm-extension" src="phpjunior_files/webrtc-patch.js" async=""></script><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="phpjunior_files/bootstrap.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script type="text/javascript" src="phpjunior_files/jquery.js"></script>
+
+    <title>phpjunior</title>
+  </head>
+
+  <body>
+    <!--  -->
+    <!-- Описываем условие задачи -->
+    <!--  -->
+    <div class="mt-4 p-3 text-center">
+      <h1>Условие задания</h1>
+      <h3>По условию задания нам дано 3 таблицы c БД testworktrafgid</h3>
+
+      <!-- Указываю на путь к БД -->
+      Путь к БД - <code>$db = mysqli_connect('localhost','root','','testworktrafgid'); </code>
+    </div>
+
+    <!-- Вывод 2ух таблиц: offers(товары) и operators(операторы) -->
+    <div class="container text-center">
+    
+    <!-- таблица offers(товары) с БД, создаю структуру таблицы -->
+    <div class="container" style="width: 300px; display: inline-block;">
+      <table class="table table-hover table-bordered table-dark"> <!-- bootstrap -->
+        <caption>Таблица offers (товары)</caption> 
+      <thead>
+        <tr>
+          <th scope="col">id</th> 
+          <th scope="col">name</th>
+        </tr>
+      </thead>
+      <tbody>
+         <!-- Заполняю таблицу offers -->
+      <tr><td>1</td><td>шампунь</td></tr><tr><td>2</td><td>порошок</td></tr><tr><td>3</td><td>мыло</td></tr><tr><td>4</td><td>зубная паста</td></tr><tr><td>5</td><td>гель для душа</td></tr><tr><td>6</td><td>зубная щетка</td></tr>          
+      </tbody>
+      </table>
+    </div>
+    
+      <!-- таблица operators(операторы) с БД, создаю структуру таблицы -->
+    <div class="container" style="width: 500px; display: inline-block;">
+      <table class="table table-hover table-bordered table-dark">
+        <caption>Таблица operators (операторы)</caption>
+      <thead>
+        <tr>
+          <th scope="col">id</th>
+          <th scope="col">name</th>
+          <th scope="col">fio</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Заполняю таблицу operators -->
+      <tr><td>10</td><td>оператор1</td><td>Миронов Сергей Игоревич</td></tr><tr><td>12</td><td>оператор2</td><td>Шевченко Андрей Иванович</td></tr><tr><td>17</td><td>оператор3</td><td>Иванюк Андрей Петрович</td></tr>          
+    </tbody>
+    </table>
+  </div>
+  </div>
+
+<!-- Вывод таблицы requests(заказы) с БД, создаю структуру таблицы -->
+<div class="container text-center">
+  <table class="table table-hover table-bordered table-dark">
+    <caption>Таблица requests (заказы)</caption>
+  <thead>
+    <tr>
+      <th scope="col">id</th>
+      <th scope="col">offer_id</th>
+      <th scope="col">price</th>
+      <th scope="col">count</th>
+      <th scope="col">operator_id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Заполняю таблицу requests -->
+  <tr><td>1</td><td>1</td><td>50</td><td>1</td><td>10</td></tr><tr><td>2</td><td>2</td><td>200</td><td>4</td><td>12</td></tr><tr><td>3</td><td>3</td><td>400</td><td>6</td><td>12</td></tr><tr><td>4</td><td>5</td><td>600</td><td>3</td><td>17</td></tr><tr><td>5</td><td>5</td><td>600</td><td>3</td><td>17</td></tr><tr><td>6</td><td>3</td><td>400</td><td>6</td><td>12</td></tr><tr><td>7</td><td>4</td><td>1000</td><td>10</td><td>10</td></tr><tr><td>8</td><td>3</td><td>400</td><td>6</td><td>12</td></tr><tr><td>9</td><td>1</td><td>50</td><td>1</td><td>17</td></tr>          
+  </tbody>
+ </table>
+</div>
+
+<!--  -->
+<!-- Переходим к первому заданию -->
+<!--  -->
+<div class="container mt-4 p-3">
+  <h1 class=" text-center">Задача 1</h1>
+  <h3>Вывести такие варианты запросов:</h3>
+  <p>1) Номер заказа, имя товара, <abbr title="Цена чего? Пришел к выводу, что колонка price в таблице requests обозначает цену заказа, а не цену товара. Вывожу сейчас цену заказа! Но тогда не понятно, почему колонка price имеет тип double, ведь нецелых чисел в задании не будет"><b>цена, </b></abbr>количество, имя оператора за которым числится заказ ,ГДЕ количество товара &gt;2 И id оператора 10 ИЛИ 12</p><p>
+</p></div>
+<!-- Решение первого задания -->
+<div class="container">
+<!-- Вывод SQL-запроса пользователю для удобства -->
+ <code>
+  <p>SELECT requests.id, offers.name, requests.price, requests.count, operators.fio <br>
+    FROM requests <br>
+    JOIN offers ON requests.offer_id=offers.id <br>
+    JOIN operators ON requests.operator_id=operators.id <br>
+    WHERE requests.count&gt;2 AND (requests.operator_id=10 OR requests.operator_id=12)<br>
+    ORDER BY requests.id</p>
+  </code>
+
+    <!-- Создание структуры таблицы для первого задания-->
+  <table class="table table-hover table-bordered table-dark text-center">
+    <caption>Таблица Задание 1</caption>
+  <thead>
+    <tr>
+      <th scope="col">Номер заказа</th>
+      <th scope="col">Имя товара</th>
+      <th scope="col">Цена</th>
+      <th scope="col">Количество</th>
+      <th scope="col">Имя оператора</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- SQL-запрос для первой задачи и заполнение таблицы -->
+  <tr><td>2</td><td>порошок</td><td>200</td><td>4</td><td>Шевченко Андрей Иванович</td></tr><tr><td>3</td><td>мыло</td><td>400</td><td>6</td><td>Шевченко Андрей Иванович</td></tr><tr><td>6</td><td>мыло</td><td>400</td><td>6</td><td>Шевченко Андрей Иванович</td></tr><tr><td>7</td><td>зубная паста</td><td>1000</td><td>10</td><td>Миронов Сергей Игоревич</td></tr><tr><td>8</td><td>мыло</td><td>400</td><td>6</td><td>Шевченко Андрей Иванович</td></tr>          
+  </tbody>
+ </table>
+
+<!--  -->
+<!-- Переходим ко второму заданию -->
+<!--  -->
+</div><div class="container mt-4 p-3">
+  <h1 class=" text-center">Задача 2</h1>
+  <h3>Вывести такие варианты запросов:</h3>
+  <p>2) Имя товара, количество товара, и <abbr title="Сумма цен заказов, верно? Сумма колонки price сгруппированной по товару"><b>сумма (price), </b></abbr> по каждому товару (сгруппировать)</p><p>
+</p></div>
+<!-- Решение второго задания -->
+<div class="container">
+<!-- Вывод SQL-запроса пользователю для удобства -->
+<code>
+  <p>SELECT offers.name, SUM(requests.count) AS e2, SUM(requests.price) AS e3<br>
+    FROM offers <br>
+    LEFT JOIN requests ON offers.id=requests.offer_id<br>
+    GROUP BY offers.name<br>
+    ORDER BY offers.id</p></code>
+
+    <!-- Создание структуры таблицы для второго задания-->
+  <table class="table table-hover table-bordered table-dark text-center">
+    <caption>Таблица Задание 2</caption>
+  <thead>
+    <tr>
+      <th scope="col">Имя товара</th>
+      <th scope="col">Количество товара</th>
+      <th scope="col">Сумма</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- SQL-запрос для второй задачи и заполнение таблицы -->
+  <tr><td>шампунь</td><td>2</td><td>100</td></tr><tr><td>порошок</td><td>4</td><td>200</td></tr><tr><td>мыло</td><td>18</td><td>1200</td></tr><tr><td>зубная паста</td><td>10</td><td>1000</td></tr><tr><td>гель для душа</td><td>6</td><td>1200</td></tr><tr><td>зубная щетка</td><td></td><td></td></tr>          
+  </tbody>
+  </table>
+</div>
+<div class="container"> 
+  <h2>Задание выполнил: <br>Ратынский Леонид Александрович</h2>
+  <h2>email:  <b>leonemage@gmail.com</b></h2>  
+  <h4>Номер телефона:  <b>+38-095-860-12-02</b></h4>  
+</div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="phpjunior_files/jquery-3.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="phpjunior_files/popper.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="phpjunior_files/bootstrap.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  
+</body></html>
